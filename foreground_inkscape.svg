@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   viewBox="0 0 64 64"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
+   sodipodi:docname="foreground_inkscape.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="true"
+     inkscape:zoom="9.0929513"
+     inkscape:cx="35.467033"
+     inkscape:cy="26.009157"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       id="grid1"
+       units="px"
+       originx="0"
+       originy="0"
+       spacingx="1"
+       spacingy="1"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       enabled="true"
+       visible="true" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient8"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0.51995569"
+         id="stop8" />
+      <stop
+         style="stop-color:#42e9ff;stop-opacity:1;"
+         offset="1"
+         id="stop9" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#a60000;stop-opacity:1;"
+         offset="0"
+         id="stop4" />
+      <stop
+         style="stop-color:#2b2b2b;stop-opacity:1;"
+         offset="1"
+         id="stop5" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient1"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#019200;stop-opacity:1;"
+         offset="0"
+         id="stop1" />
+      <stop
+         style="stop-color:#a3e4a3;stop-opacity:1;"
+         offset="0.38755685"
+         id="stop3" />
+      <stop
+         style="stop-color:#019200;stop-opacity:1;"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1"
+       id="linearGradient2"
+       x1="32"
+       y1="7"
+       x2="32"
+       y2="58"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3"
+       id="linearGradient5"
+       x1="35"
+       y1="10"
+       x2="35"
+       y2="55"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient8"
+       id="linearGradient9"
+       x1="34"
+       y1="55"
+       x2="34"
+       y2="35"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="display:inline;fill:url(#linearGradient2);stroke:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"
+       d="M 7,7 V 58 H 58 V 7 Z"
+       id="path1" />
+    <path
+       style="display:inline;fill:url(#linearGradient5);fill-opacity:1;stroke:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"
+       d="m 10,15 v 35 c 0,5 0,5 5,5 h 35 c 5,0 5,0 5,-5 V 15 c 0,-5 0,-5 -5,-5 H 15 c -5,0 -5,0 -5,5 z"
+       id="path3"
+       sodipodi:nodetypes="ccccccccc" />
+    <path
+       id="path5"
+       style="fill:url(#linearGradient9);fill-opacity:1;stroke:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"
+       d="M 18.015625 35.5 A 1.5 1.5 0 0 0 17.099609 35.800781 A 1.5 1.5 0 0 0 16.800781 37.900391 L 19.681641 41.740234 C 16.842559 44.844057 15 49.264503 15 55 L 50 55 C 50 49.284229 48.170131 44.875605 45.347656 41.773438 L 48.060547 39.060547 A 1.5 1.5 0 0 0 48.060547 36.939453 A 1.5 1.5 0 0 0 47 36.5 A 1.5 1.5 0 0 0 45.939453 36.939453 L 43.130859 39.748047 C 36.996895 35.09598 28.057049 35.084209 21.910156 39.714844 L 19.199219 36.099609 A 1.5 1.5 0 0 0 18.015625 35.5 z " />
+  </g>
+</svg>

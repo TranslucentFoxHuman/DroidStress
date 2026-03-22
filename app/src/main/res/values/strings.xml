@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">DroidStress</string>
+    <string name="threads">Threads: </string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="restart">Restart</string>
+    <string name="notif_channel_name">Foreground Service</string>
+    <string name="notif_channel_description">Required to continue running stress test when app is closed.</string>
+    <string name="notif_fgsvc_title">DroidStress foreground service</string>
+    <string name="notif_fgsvc_desc">Stress test is running in background...</string>
+</resources>
