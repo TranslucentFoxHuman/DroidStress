@@ -101,6 +101,7 @@ class MainActivity : AppCompatActivity() {
 
         val svcobj = Intent(application, StressService::class.java)
 
+        // Button functions
         findViewById<Button>(R.id.startbutton).setOnClickListener {
             if (StressService.isRunning) {
                 // Stop service
@@ -125,6 +126,10 @@ class MainActivity : AppCompatActivity() {
                 startService(svcobj)
                 findViewById<Button>(R.id.startbutton).setText(R.string.stop)
             }
+        }
+        findViewById<Button>(R.id.blankscreenButton).setOnClickListener {
+            val intent = Intent(this, BlankScreenActivity::class.java)
+            startActivity(intent)
         }
 
         findViewById<EditText>(R.id.threadsInput).addTextChangedListener {

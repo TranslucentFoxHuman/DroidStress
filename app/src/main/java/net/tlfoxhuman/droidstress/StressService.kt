@@ -66,6 +66,8 @@ class StressService : Service() {
 
         startForeground(1,notifBuilder)
 
+        // Wake lock here
+
         StressService.isRunning = true
         val scope = CoroutineScope(Dispatchers.Default)
         val jobs = (1..threadCount).map {

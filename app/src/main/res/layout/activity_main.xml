@@ -62,5 +62,12 @@
             android:text="@string/start"
             android:textSize="20sp" />
 
+        <Button
+            android:id="@+id/blankscreenButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/blank_screen"
+            android:textSize="20sp" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
