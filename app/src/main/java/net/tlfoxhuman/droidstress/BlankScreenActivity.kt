@@ -1,7 +1,9 @@
 package net.tlfoxhuman.droidstress
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
@@ -11,6 +13,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class BlankScreenActivity : AppCompatActivity() {
+
+    private lateinit var wakelock: PowerManager.WakeLock
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -21,7 +26,8 @@ class BlankScreenActivity : AppCompatActivity() {
             insets
         }
 
-        // I want to add wake lock code here
+        wakelock = (getSystemService(Context.POWER_SERVICE) as PowerManager).newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK,"BlankScreenActivity::BlankScreenIsActive")
+        wakelock.acquire()
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
             fun goFullscreen() {
@@ -50,5 +56,10 @@ class BlankScreenActivity : AppCompatActivity() {
 
 
 
+    }
+
+    override fun onDestroy() {
+        wakelock.release()
+        super.onDestroy()
     }
 }

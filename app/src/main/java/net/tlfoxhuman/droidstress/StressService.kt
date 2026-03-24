@@ -20,20 +20,22 @@ package net.tlfoxhuman.droidstress
 
 import android.app.PendingIntent
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.os.IBinder
+import android.os.PowerManager
 import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class StressService : Service() {
     companion object {
         @Volatile var isRunning = false
         var threadCount : Int = 8
     }
+
+    private lateinit var wakelock: PowerManager.WakeLock
 
     suspend fun stress() {
         var number: Long = System.currentTimeMillis()
@@ -66,7 +68,9 @@ class StressService : Service() {
 
         startForeground(1,notifBuilder)
 
-        // Wake lock here
+        wakelock = (getSystemService(Context.POWER_SERVICE) as PowerManager).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"StressService::StressTestRunning")
+        wakelock.acquire()
+
 
         StressService.isRunning = true
         val scope = CoroutineScope(Dispatchers.Default)
@@ -79,6 +83,7 @@ class StressService : Service() {
 
     override fun onDestroy() {
         StressService.isRunning = false
+        wakelock.release()
         super.onDestroy()
     }
     override fun onCreate() {
