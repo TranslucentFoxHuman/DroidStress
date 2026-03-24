@@ -27,6 +27,8 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
@@ -132,6 +134,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
+
         findViewById<EditText>(R.id.threadsInput).addTextChangedListener {
             if (StressService.isRunning) {
                 isTextChanged = true
@@ -139,6 +143,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    // Menu items functions
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_about) {
+            val intent = Intent(this, AboutActivity::class.java)
+            startActivity(intent)
+        }
+        return true
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.mainactivity_menu, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
 

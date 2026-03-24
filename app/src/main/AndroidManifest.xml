@@ -16,14 +16,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
         <activity
+            android:name=".AboutActivity"
+            android:theme="@style/Theme.DroidStress"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" />
+        <activity
             android:name=".BlankScreenActivity"
             android:exported="true"
-            android:theme="@style/Theme.BlankScreen"/>
+            android:theme="@style/Theme.BlankScreen" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.DroidStress">
+            android:theme="@style/Theme.DroidStress"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,7 +40,7 @@
             android:name=".StressService"
             android:exported="false"
             android:foregroundServiceType="specialUse"
-            tools:ignore="ForegroundServicePermission"></service>
+            tools:ignore="ForegroundServicePermission" />
     </application>
 
 </manifest>

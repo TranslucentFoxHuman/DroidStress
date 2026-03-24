@@ -9,4 +9,10 @@
     <string name="notif_fgsvc_title">DroidStress foreground service</string>
     <string name="notif_fgsvc_desc">Stress test is running in background...</string>
     <string name="blank_screen">Show blank screen</string>
+    <string name="menu_about">About...</string>
+    <string name="version">Version:\u00A0</string>
+    <string name="html_placeholder">This is placeholder text</string>
+
+    <string name="gpl_html">This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.&lt;br/&gt;&lt;br/&gt; This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&lt;br/&gt;&lt;br/&gt; See the GNU General Public License for more details. For more information, see &amp;lt;&lt;a href="https://www.gnu.org/licenses/"&gt;https://www.gnu.org/licenses/&lt;/a&gt;&amp;gt;</string>
+    <string name="copyright_html">Copyright (C) 2026 &lt;a href="https://tlfoxhuman.net"&gt;TlFoxHuman (Translucentfoxhuman, 半狐, 半透明狐人間)&lt;/a&gt;</string>
 </resources>
