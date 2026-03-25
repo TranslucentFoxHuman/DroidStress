@@ -85,7 +85,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         // init
+        val svcobj = Intent(application, StressService::class.java)
+
         reloadServiceStatus()
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             permissionReq.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
@@ -100,8 +103,8 @@ class MainActivity : AppCompatActivity() {
             wic.isAppearanceLightStatusBars = !isLight()
         }
 
+        findViewById<EditText>(R.id.threadsInput).setText(Runtime.getRuntime().availableProcessors().toString())
 
-        val svcobj = Intent(application, StressService::class.java)
 
         // Button functions
         findViewById<Button>(R.id.startbutton).setOnClickListener {
