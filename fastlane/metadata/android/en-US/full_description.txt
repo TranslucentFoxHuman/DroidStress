@@ -1,11 +1,11 @@
-This program is a simple stress test for Android devices.
+This program is a simple stress test tool for Android devices.
 
 It offers the following features:
 
-    Forces the CPU to perform unnecessary calculations to generate load
-    Executes the process with a specified number of threads
-    Runs in the background, allowing work to continue even when the app is closed
-    Displays a solid black blank screen to prevent burn-in the display for devices that has OLED display
+- Forces the CPU to perform unnecessary calculations to generate load
+- Executes the process with a specified number of threads
+- Runs in the background, allowing work to continue even when the app is closed
+- Displays a solid black blank screen to prevent burn-in the display for devices that has OLED display
 
 How to use:
 On Android 13 and newer, When this app started at the first time, it will show a dialog requesting notification permission. This is required to the app can continue processing even when its window is not open.
@@ -16,12 +16,12 @@ Press Start to begin processing. Once started, a notification will appear indica
 
 Press Show blank screen to display a solid black screen and temporarily stop the screen from sleeping. This is useful when running long stress tests on OLED displays.
 
-Click About… in the menu bar to view the app's version and license information.
+Click About... in the menu bar to view the app's version and license information.
 
 Use cases:
 
 - Battery refresh
-  If the battery level is not displayed correctly, fully charging to 100 % and then discharging to 0 % can recalibrate the measurement. This app helps consume battery during that process.
+  If the battery level is not displayed correctly, fully charging to 100% and then discharging to 0% can recalibrate the measurement. This app helps consume battery during that process.
 
 - Warming the phone
   A device that has cooled down can suddenly shut down or freeze, making it unstable. Use this program in the winter to warm the device and stabilize its operation before it becomes unstable.
