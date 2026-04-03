@@ -1,1 +1,1 @@
-Simpre CPU Stress test tool for Android 
+Simple CPU Stress test tool for Android 
