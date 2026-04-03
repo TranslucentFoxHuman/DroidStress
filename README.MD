@@ -23,7 +23,7 @@ Press **Start** to begin processing. Once started, a notification will appear in
 
 Press **Show blank screen** to display a solid black screen and temporarily stop the screen from sleeping. This is useful when running long stress tests on OLED displays.
 
-Click **About…** in the menu bar to view the app's version and license information.
+Click **About...** in the menu bar to view the app's version and license information.
 
 ## Use Cases
 
@@ -41,7 +41,7 @@ Click **About…** in the menu bar to view the app's version and license informa
 I developed this project on my own, so there are features that are difficult for me to implement:
 
 - **A better app icon**  
-  The icon must be GPL‑compatible, editable in Inkscape as an SVG file. Please do not use AI to create it - I can give the AI instructions to generate that myself.
+  The icon must be GPL‑compatible, editable in Inkscape as an SVG file. Please do not use AI to create it - Everyone can easily give instructions to AI to generate a logo.
 
 - **A CPU‑intensive calculation algorithm**  
   Currently the program uses a very simple calculation to load the CPU. I need an algorithm that can generate a stronger load. The algorithm should be implementable in Kotlin, Java, C, etc., work the same in all languages, not depend on external libraries, and not be tied to a particular architecture.
