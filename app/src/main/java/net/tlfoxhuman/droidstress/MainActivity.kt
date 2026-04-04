@@ -31,6 +31,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -48,8 +49,10 @@ class MainActivity : AppCompatActivity() {
         //// Read current service status
         if (StressService.isRunning) {
             findViewById<Button>(R.id.startbutton).setText(R.string.stop)
+            findViewById<TextView>(R.id.statusText).setText(getText(R.string.running))
         } else {
             findViewById<Button>(R.id.startbutton).setText(R.string.start)
+            findViewById<TextView>(R.id.statusText).setText(getText(R.string.stopped))
         }
         //// Restore running threads
         findViewById<EditText>(R.id.threadsInput).setText(StressService.threadCount.toString())
@@ -116,9 +119,11 @@ class MainActivity : AppCompatActivity() {
                     reloadServiceStatus()
                     startService(svcobj)
                     findViewById<Button>(R.id.startbutton).setText(R.string.stop)
+                    findViewById<TextView>(R.id.statusText).setText(getText(R.string.running))
                     isTextChanged = false
                 } else {
                     findViewById<Button>(R.id.startbutton).setText(R.string.start)
+                    findViewById<TextView>(R.id.statusText).setText(getText(R.string.stopped))
                 }
             } else {
                 // Start service
@@ -130,6 +135,7 @@ class MainActivity : AppCompatActivity() {
                 reloadServiceStatus()
                 startService(svcobj)
                 findViewById<Button>(R.id.startbutton).setText(R.string.stop)
+                findViewById<TextView>(R.id.statusText).setText(getText(R.string.running))
             }
         }
         findViewById<Button>(R.id.blankscreenButton).setOnClickListener {
