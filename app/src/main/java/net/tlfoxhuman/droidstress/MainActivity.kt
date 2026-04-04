@@ -39,11 +39,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.addTextChangedListener
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import org.w3c.dom.Text
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
@@ -71,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<EditText>(R.id.durationInput).setText(StressService.remainTimerMin.toString())
         }
         if(isTimerEnabled) {
-            CoroutineScope(Dispatchers.Default).launch { timerUpdateProc() }
+            thread { timerUpdateProc() }
         }
     }
 
@@ -93,10 +89,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    suspend fun timerUpdateProc() {
+    private fun timerUpdateProc() {
         while (isTimerEnabled) {
             if ((System.currentTimeMillis()/1000) >= timerRemain) {
                 isTimerEnabled=false
+                stopService(svcobj)
                 runOnUiThread {
                     findViewById<Button>(R.id.startbutton).setText(R.string.start)
                     findViewById<TextView>(R.id.statusText).setText(getText(R.string.stopped))
@@ -116,7 +113,7 @@ class MainActivity : AppCompatActivity() {
                     findViewById<TextView>(R.id.statusText).setText(lefttimeString.replace("%s",lefttimemin + ":" + lefttimesec))
             }
 
-            delay(1000)
+            Thread.sleep(1000)
         }
     }
 
@@ -128,7 +125,6 @@ class MainActivity : AppCompatActivity() {
             timerRemain = (System.currentTimeMillis()/1000) + (runMin*60)
             StressService.remainTimerSec = timerRemain
             StressService.remainTimerMin = runMin
-            CoroutineScope(Dispatchers.Default).launch { timerUpdateProc() } //←犯人?
         }
         StressService.threadCount = findViewById<EditText>(R.id.threadsInput).text.toString().toIntOrNull() ?: 8
         reloadServiceStatus()
@@ -222,6 +218,9 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-
+    override fun onDestroy() {
+        isTimerEnabled = false
+        super.onDestroy()
+    }
 
 }

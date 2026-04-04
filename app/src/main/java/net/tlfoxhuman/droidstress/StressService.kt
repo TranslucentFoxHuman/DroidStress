@@ -22,14 +22,11 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import androidx.core.app.NotificationCompat
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
-import kotlin.concurrent.timer
+import kotlin.concurrent.thread
 
 class StressService : Service() {
     companion object {
@@ -42,10 +39,8 @@ class StressService : Service() {
 
     private lateinit var wakelock: PowerManager.WakeLock
 
-    suspend fun stress() {
-        android.util.Log.i("StressService",isRunning.toString())
-        var number: Long = 12345//System.currentTimeMillis()
-        android.util.Log.i("StressService",isRunning.toString())
+    private fun stress() {
+        var number: Long = System.currentTimeMillis()
         while (isRunning) {
             if (number % 4 == 0L) {
                 number = number*2
@@ -62,13 +57,19 @@ class StressService : Service() {
         return null
     }
 
-    suspend fun timercheck() {
+    private fun timercheck() {
         while (isTimerEnabled) {
-            /*if ((System.currentTimeMillis()/1000) >= remainTimerSec) {
+            if ((System.currentTimeMillis()/1000) >= remainTimerSec) {
                 isRunning = false
                 isTimerEnabled = false
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    stopForeground(STOP_FOREGROUND_REMOVE)
+                } else {
+                    stopForeground(true)
+                }
+                stopSelf()
                 return
-            }*/
+            }
             Thread.sleep(1000)
         }
     }
@@ -91,11 +92,11 @@ class StressService : Service() {
 
 
         isRunning = true
-        //CoroutineScope(Dispatchers.Default).launch { timercheck() }
-        val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
         for (i in 1..threadCount) {
-            scope.launch { stress() }
-            android.util.Log.i("StressService",isRunning.toString())
+            thread {stress()}
+        }
+        if (isTimerEnabled) {
+            thread { timercheck() }
         }
         return START_NOT_STICKY
     }
