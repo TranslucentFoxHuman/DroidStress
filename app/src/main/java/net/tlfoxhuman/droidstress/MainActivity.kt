@@ -39,11 +39,20 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.addTextChangedListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.w3c.dom.Text
 
 class MainActivity : AppCompatActivity() {
 
     // Global variables
     private var isTextChanged: Boolean = false
+    var isTimerEnabled: Boolean = false
+    var timerRemain: Long = 0
+
+    lateinit var svcobj: Intent
 
     private fun reloadServiceStatus() {
         //// Read current service status
@@ -54,8 +63,16 @@ class MainActivity : AppCompatActivity() {
             findViewById<Button>(R.id.startbutton).setText(R.string.start)
             findViewById<TextView>(R.id.statusText).setText(getText(R.string.stopped))
         }
+        isTimerEnabled = StressService.isTimerEnabled
+        timerRemain = StressService.remainTimerSec
         //// Restore running threads
         findViewById<EditText>(R.id.threadsInput).setText(StressService.threadCount.toString())
+        if (StressService.remainTimerMin != 0) {
+            findViewById<EditText>(R.id.durationInput).setText(StressService.remainTimerMin.toString())
+        }
+        if(isTimerEnabled) {
+            CoroutineScope(Dispatchers.Default).launch { timerUpdateProc() }
+        }
     }
 
     // Notification related codes
@@ -76,6 +93,50 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    suspend fun timerUpdateProc() {
+        while (isTimerEnabled) {
+            if ((System.currentTimeMillis()/1000) >= timerRemain) {
+                isTimerEnabled=false
+                runOnUiThread {
+                    findViewById<Button>(R.id.startbutton).setText(R.string.start)
+                    findViewById<TextView>(R.id.statusText).setText(getText(R.string.stopped))
+                }
+                return
+            }
+            var leftsec: Long = timerRemain - (System.currentTimeMillis()/1000)
+            var lefttimemin: String = (leftsec/60).toInt().toString()
+            var lefttimesec_int: Int = (leftsec%60).toInt()
+            var lefttimesec: String = lefttimesec_int.toString()
+            var lefttimeString: String = getText(R.string.sremaining).toString()
+
+            if (lefttimesec_int < 10) {
+                lefttimesec = "0" + lefttimesec_int.toString()
+            }
+            runOnUiThread {
+                    findViewById<TextView>(R.id.statusText).setText(lefttimeString.replace("%s",lefttimemin + ":" + lefttimesec))
+            }
+
+            delay(1000)
+        }
+    }
+
+    private fun startStress(intentobj: Intent) {
+        val runMin = findViewById<EditText>(R.id.durationInput).text.toString().toIntOrNull()
+        if (runMin != null && runMin != 0) {
+            isTimerEnabled = true
+            StressService.isTimerEnabled = true
+            timerRemain = (System.currentTimeMillis()/1000) + (runMin*60)
+            StressService.remainTimerSec = timerRemain
+            StressService.remainTimerMin = runMin
+            CoroutineScope(Dispatchers.Default).launch { timerUpdateProc() } //←犯人?
+        }
+        StressService.threadCount = findViewById<EditText>(R.id.threadsInput).text.toString().toIntOrNull() ?: 8
+        reloadServiceStatus()
+        startService(intentobj)
+        findViewById<Button>(R.id.startbutton).setText(R.string.stop)
+        findViewById<TextView>(R.id.statusText).setText(getText(R.string.running))
+    }
+
     // int main(void) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +149,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // init
-        val svcobj = Intent(application, StressService::class.java)
+        svcobj = Intent(application, StressService::class.java)
 
         reloadServiceStatus()
 
@@ -114,12 +175,9 @@ class MainActivity : AppCompatActivity() {
             if (StressService.isRunning) {
                 // Stop service
                 stopService(svcobj)
+                isTimerEnabled = false
                 if (isTextChanged) {
-                    StressService.threadCount = findViewById<EditText>(R.id.threadsInput).text.toString().toIntOrNull() ?: 8
-                    reloadServiceStatus()
-                    startService(svcobj)
-                    findViewById<Button>(R.id.startbutton).setText(R.string.stop)
-                    findViewById<TextView>(R.id.statusText).setText(getText(R.string.running))
+                    startStress(svcobj)
                     isTextChanged = false
                 } else {
                     findViewById<Button>(R.id.startbutton).setText(R.string.start)
@@ -131,11 +189,7 @@ class MainActivity : AppCompatActivity() {
                     permissionReq.launch(Manifest.permission.POST_NOTIFICATIONS)
                     return@setOnClickListener
                 }
-                StressService.threadCount = findViewById<EditText>(R.id.threadsInput).text.toString().toIntOrNull() ?: 8
-                reloadServiceStatus()
-                startService(svcobj)
-                findViewById<Button>(R.id.startbutton).setText(R.string.stop)
-                findViewById<TextView>(R.id.statusText).setText(getText(R.string.running))
+                startStress(svcobj)
             }
         }
         findViewById<Button>(R.id.blankscreenButton).setOnClickListener {

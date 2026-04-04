@@ -27,19 +27,26 @@ import android.os.PowerManager
 import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlin.concurrent.timer
 
 class StressService : Service() {
     companion object {
         @Volatile var isRunning = false
+        @Volatile var isTimerEnabled = false
+        @Volatile var remainTimerSec: Long = 0
+        @Volatile var remainTimerMin: Int = 0
         var threadCount : Int = 8
     }
 
     private lateinit var wakelock: PowerManager.WakeLock
 
     suspend fun stress() {
-        var number: Long = System.currentTimeMillis()
-        while (StressService.isRunning) {
+        android.util.Log.i("StressService",isRunning.toString())
+        var number: Long = 12345//System.currentTimeMillis()
+        android.util.Log.i("StressService",isRunning.toString())
+        while (isRunning) {
             if (number % 4 == 0L) {
                 number = number*2
             } else if (number % 3 == 0L) {
@@ -53,6 +60,17 @@ class StressService : Service() {
     }
     override fun onBind(p0: Intent?): IBinder? {
         return null
+    }
+
+    suspend fun timercheck() {
+        while (isTimerEnabled) {
+            /*if ((System.currentTimeMillis()/1000) >= remainTimerSec) {
+                isRunning = false
+                isTimerEnabled = false
+                return
+            }*/
+            Thread.sleep(1000)
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -72,17 +90,21 @@ class StressService : Service() {
         wakelock.acquire()
 
 
-        StressService.isRunning = true
-        val scope = CoroutineScope(Dispatchers.Default)
-        val jobs = (1..threadCount).map {
+        isRunning = true
+        //CoroutineScope(Dispatchers.Default).launch { timercheck() }
+        val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+        for (i in 1..threadCount) {
             scope.launch { stress() }
+            android.util.Log.i("StressService",isRunning.toString())
         }
-        //runBlocking { jobs.joinAll() }
         return START_NOT_STICKY
     }
 
     override fun onDestroy() {
-        StressService.isRunning = false
+        isRunning = false
+        isTimerEnabled = false
+        remainTimerSec = 0
+        remainTimerMin = 0
         wakelock.release()
         super.onDestroy()
     }
