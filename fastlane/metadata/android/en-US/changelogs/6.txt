@@ -1,0 +1,1 @@
+Added a button that opens the GitHub page of this app to About activity
