@@ -25,6 +25,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import kotlin.concurrent.thread
 
@@ -34,22 +35,59 @@ class StressService : Service() {
         @Volatile var isTimerEnabled = false
         @Volatile var remainTimerSec: Long = 0
         @Volatile var remainTimerMin: Int = 0
-        var threadCount : Int = 8
+        @Volatile var threadCount : Int = 8
+        @Volatile var memTotal: Int = 0
     }
+
+    var memPerThread:Long = 0L
 
     private lateinit var wakelock: PowerManager.WakeLock
 
     private fun stress() {
         var number: Long = System.currentTimeMillis()
         while (isRunning) {
-            if (number % 4 == 0L) {
-                number = number*2
-            } else if (number % 3 == 0L) {
-                number = number/2
-            } else if (number % 2 == 0L) {
-                number = number + 1
+
+            if (memTotal > 0) {
+                //Memory Stress
+                try {
+                    var memStressArray = Array<Long>(memPerThread.toInt()) { 0L }
+                    for (i in 0..(memPerThread - 1)) {
+                        if (number % 4 == 0L) {
+                            number = number * 2
+                        } else if (number % 3 == 0L) {
+                            number = number / 2
+                        } else if (number % 2 == 0L) {
+                            number = number + 1
+                        } else {
+                            number = number - 1
+                        }
+                        memStressArray[i.toInt()] = number
+                    }
+                    memStressArray = emptyArray()
+                    System.gc()
+                } catch (e: OutOfMemoryError){
+                    //Fall back if VM memory is full
+                    if (number % 4 == 0L) {
+                        number = number*2
+                    } else if (number % 3 == 0L) {
+                        number = number/2
+                    } else if (number % 2 == 0L) {
+                        number = number + 1
+                    } else {
+                        number = number -1
+                    }
+                }
             } else {
-                number = number -1
+                //CPU Stress
+                if (number % 4 == 0L) {
+                    number = number*2
+                } else if (number % 3 == 0L) {
+                    number = number/2
+                } else if (number % 2 == 0L) {
+                    number = number + 1
+                } else {
+                    number = number -1
+                }
             }
         }
     }
@@ -75,6 +113,12 @@ class StressService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if ((memTotal*1024*1024) > Runtime.getRuntime().maxMemory()) {
+            memPerThread = Runtime.getRuntime().maxMemory()
+        } else {
+            memPerThread = (memTotal * 1024 * 1024) / threadCount.toLong()
+        }
+
         val backToMainIntent = Intent(this, MainActivity::class.java).let {
             PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_IMMUTABLE)
         }
