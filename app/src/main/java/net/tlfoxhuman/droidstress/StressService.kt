@@ -23,9 +23,11 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.os.PowerManager
-import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import kotlin.concurrent.thread
 
@@ -50,7 +52,7 @@ class StressService : Service() {
             if (memTotal > 0) {
                 //Memory Stress
                 try {
-                    var memStressArray = Array<Long>(memPerThread.toInt()) { 0L }
+                    var memStressArray = Array<Byte>(memPerThread.toInt()) { 0 }
                     for (i in 0..(memPerThread - 1)) {
                         if (number % 4 == 0L) {
                             number = number * 2
@@ -61,20 +63,41 @@ class StressService : Service() {
                         } else {
                             number = number - 1
                         }
-                        memStressArray[i.toInt()] = number
+                        memStressArray[i.toInt()] = number.toByte()
                     }
                     memStressArray = emptyArray()
                     System.gc()
                 } catch (e: OutOfMemoryError){
                     //Fall back if VM memory is full
-                    if (number % 4 == 0L) {
-                        number = number*2
-                    } else if (number % 3 == 0L) {
-                        number = number/2
-                    } else if (number % 2 == 0L) {
-                        number = number + 1
-                    } else {
-                        number = number -1
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(this,getText(R.string.memoryfull),Toast.LENGTH_LONG).show()
+                    }
+                    try {
+                        var memStressArray = Array<Byte>(memPerThread.toInt()/2) { 0 }
+                        for (i in 0..((memPerThread/2) - 1)) {
+                            if (number % 4 == 0L) {
+                                number = number * 2
+                            } else if (number % 3 == 0L) {
+                                number = number / 2
+                            } else if (number % 2 == 0L) {
+                                number = number + 1
+                            } else {
+                                number = number - 1
+                            }
+                            memStressArray[i.toInt()] = number.toByte()
+                        }
+                        memStressArray = emptyArray()
+                        System.gc()
+                    } catch (e: OutOfMemoryError) {
+                        if (number % 4 == 0L) {
+                            number = number * 2
+                        } else if (number % 3 == 0L) {
+                            number = number / 2
+                        } else if (number % 2 == 0L) {
+                            number = number + 1
+                        } else {
+                            number = number - 1
+                        }
                     }
                 }
             } else {
@@ -113,11 +136,16 @@ class StressService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if ((memTotal*1024*1024) > Runtime.getRuntime().maxMemory()) {
-            memPerThread = Runtime.getRuntime().maxMemory()
+        if ((memTotal.toLong()*1024L*1024L) > Runtime.getRuntime().maxMemory()) {
+            memTotal = (Runtime.getRuntime().maxMemory()/1024/1024).toInt()
+            memPerThread = Runtime.getRuntime().maxMemory()/4
+            Handler(Looper.getMainLooper()).post {
+                Toast.makeText(this,getText(R.string.memsizeover).replace(("%s").toRegex(),memTotal.toString()),Toast.LENGTH_LONG)
+            }
         } else {
             memPerThread = (memTotal * 1024 * 1024) / threadCount.toLong()
         }
+
 
         val backToMainIntent = Intent(this, MainActivity::class.java).let {
             PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_IMMUTABLE)
