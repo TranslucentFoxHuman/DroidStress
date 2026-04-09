@@ -61,11 +61,17 @@ class MainActivity : AppCompatActivity() {
         }
         isTimerEnabled = StressService.isTimerEnabled
         timerRemain = StressService.remainTimerSec
-        //// Restore running threads
+        //// Restore values
         findViewById<EditText>(R.id.threadsInput).setText(StressService.threadCount.toString())
+        if (StressService.memTotal > 0) {
+            findViewById<EditText>(R.id.memstressInput).setText(StressService.memTotal.toString())
+        } else {
+            findViewById<EditText>(R.id.memstressInput).setText("")
+        }
         if (StressService.remainTimerMin != 0) {
             findViewById<EditText>(R.id.durationInput).setText(StressService.remainTimerMin.toString())
         }
+
         if(isTimerEnabled) {
             thread { timerUpdateProc() }
         }
@@ -124,6 +130,10 @@ class MainActivity : AppCompatActivity() {
             timerRemain = (System.currentTimeMillis()/1000) + (runMin*60)
             StressService.remainTimerSec = timerRemain
             StressService.remainTimerMin = runMin
+        }
+        val memstress = findViewById<EditText>(R.id.memstressInput).text.toString().toIntOrNull()
+        if (memstress != null && memstress != 0) {
+            StressService.memTotal = memstress
         }
         StressService.threadCount = findViewById<EditText>(R.id.threadsInput).text.toString().toIntOrNull() ?: 8
         reloadServiceStatus()
