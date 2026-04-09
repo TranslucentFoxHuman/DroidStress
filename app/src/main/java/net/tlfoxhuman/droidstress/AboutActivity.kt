@@ -18,14 +18,19 @@
 
 package net.tlfoxhuman.droidstress
 
+import android.content.Intent
+import android.content.res.Configuration
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.text.method.LinkMovementMethod
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 
 class AboutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +43,16 @@ class AboutActivity : AppCompatActivity() {
             insets
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            fun isLight(): Boolean {
+                val uiMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                return uiMode == Configuration.UI_MODE_NIGHT_YES
+            }
+            val wic = WindowInsetsControllerCompat(window, window.decorView)
+            wic.isAppearanceLightStatusBars = !isLight()
+        }
+
+
         findViewById<TextView>(R.id.versionView).setText(packageManager.getPackageInfo(packageName,0).versionName)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -49,5 +64,10 @@ class AboutActivity : AppCompatActivity() {
         }
         findViewById<TextView>(R.id.copyrightView).movementMethod = LinkMovementMethod.getInstance();
         findViewById<TextView>(R.id.gplTextView).movementMethod = LinkMovementMethod.getInstance();
+
+        //Button functions
+        findViewById<Button>(R.id.aboutButton).setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/TranslucentFoxHuman/DroidStress")))
+        }
     }
 }

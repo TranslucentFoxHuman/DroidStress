@@ -72,8 +72,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Notification related codes
-    // Ahhhhh!! F**k Google!!! I wasted more than an hour writing code that controls the permissions of notifications and notifications itself!! Android is evil because it has a lot of destructive changes. At the same time, all object-oriented programming languages are evil. Yes, They are EVIL. I LOVE C. I HATE Kotlin.
-    private val permissionReq = registerForActivityResult(
+     private val permissionReq = registerForActivityResult(
         ActivityResultContracts.RequestPermission(),) {}
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
