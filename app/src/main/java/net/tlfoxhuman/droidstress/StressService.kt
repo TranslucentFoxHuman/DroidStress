@@ -54,6 +54,9 @@ class StressService : Service() {
                 try {
                     var memStressArray = Array<Byte>(memPerThread.toInt()) { 0 }
                     for (i in 0..(memPerThread - 1)) {
+                        if (!isRunning) {
+                            break
+                        }
                         if (number % 4 == 0L) {
                             number = number * 2
                         } else if (number % 3 == 0L) {
@@ -75,6 +78,9 @@ class StressService : Service() {
                     try {
                         var memStressArray = Array<Byte>(memPerThread.toInt()/2) { 0 }
                         for (i in 0..((memPerThread/2) - 1)) {
+                            if (!isRunning) {
+                                break
+                            }
                             if (number % 4 == 0L) {
                                 number = number * 2
                             } else if (number % 3 == 0L) {
