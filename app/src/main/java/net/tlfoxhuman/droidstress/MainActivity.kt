@@ -134,6 +134,8 @@ class MainActivity : AppCompatActivity() {
         val memstress = findViewById<EditText>(R.id.memstressInput).text.toString().toIntOrNull()
         if (memstress != null && memstress != 0) {
             StressService.memTotal = memstress
+        } else {
+            StressService.memTotal = 0
         }
         StressService.threadCount = findViewById<EditText>(R.id.threadsInput).text.toString().toIntOrNull() ?: 8
         reloadServiceStatus()

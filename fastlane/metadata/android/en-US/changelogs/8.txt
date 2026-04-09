@@ -1,0 +1,5 @@
+Added memory stress test feature
+
+Bugfix:
+- Fixed a bug that the Memory stress test's value is reset to the previous value even if the value is zero or empty after the service is stopped.
+- Changed the memory stress test thread to stop as soon as possible after service stopped.
