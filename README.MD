@@ -71,4 +71,4 @@ I developed this project on my own, so there are features that are difficult for
 
 ## License
 
-This software is provided under the GNU General Public License Version 3 (or later).
+This software is provided under the [GNU General Public License Version 3 (or later)](https://spdx.org/licenses/GPL-3.0-or-later.html).
