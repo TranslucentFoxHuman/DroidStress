@@ -72,3 +72,4 @@ I developed this project on my own, so there are features that are difficult for
 ## License
 
 This software is provided under the GNU General Public License Version 3 (or later).
+For more information, see the COPYING file or [https://gnu.org/licenses](https://gnu.org/licenses)
