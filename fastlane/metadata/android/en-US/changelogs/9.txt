@@ -1,0 +1,1 @@
+Removed unnecessary dependences. By changing the activity from AppCompatActivity to Activity and removing unnecessary dependencies, the app size is now only one-sixth.
