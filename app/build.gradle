@@ -5,8 +5,7 @@ plugins {
 android {
     namespace 'net.tlfoxhuman.droidstress'
     compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
+        version = release(37) {
         }
     }
     dependenciesInfo {
@@ -16,10 +15,10 @@ android {
 
     defaultConfig {
         applicationId "net.tlfoxhuman.droidstress"
-        minSdk 16
-        targetSdk 36
-        versionCode 8
-        versionName "1.6.1"
+        minSdk 14
+        targetSdk 37
+        versionCode 9
+        versionName "1.6.2"
     }
 
     buildTypes {
@@ -36,8 +35,5 @@ android {
 }
 
 dependencies {
-    implementation libs.androidx.core.ktx
-    implementation libs.androidx.appcompat
     implementation libs.androidx.activity
-    implementation libs.androidx.constraintlayout
 }

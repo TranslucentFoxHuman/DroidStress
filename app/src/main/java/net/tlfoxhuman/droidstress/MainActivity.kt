@@ -19,6 +19,7 @@
 package net.tlfoxhuman.droidstress
 
 import android.Manifest
+import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -32,8 +33,7 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -41,7 +41,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.addTextChangedListener
 import kotlin.concurrent.thread
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : Activity() {
 
     // Global variables
     private var isTextChanged: Boolean = false
@@ -77,9 +77,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Notification related codes
-     private val permissionReq = registerForActivityResult(
-        ActivityResultContracts.RequestPermission(),) {}
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = getString(R.string.notif_channel_name)
@@ -161,7 +158,11 @@ class MainActivity : AppCompatActivity() {
         reloadServiceStatus()
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            permissionReq.launch(Manifest.permission.POST_NOTIFICATIONS)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                0
+            )
         }
         createNotificationChannel()
         ////F**k Google!! Don't make unnecessary changes!!
@@ -192,8 +193,12 @@ class MainActivity : AppCompatActivity() {
                 }
             } else {
                 // Start service
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                    permissionReq.launch(Manifest.permission.POST_NOTIFICATIONS)
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED && Build.VERSION.SDK_INT >= 33) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                        0
+                    )
                     return@setOnClickListener
                 }
                 startStress(svcobj)

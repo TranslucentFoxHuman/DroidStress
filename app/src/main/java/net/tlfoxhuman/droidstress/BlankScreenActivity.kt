@@ -18,6 +18,7 @@
 
 package net.tlfoxhuman.droidstress
 
+import android.app.Activity
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -25,18 +26,15 @@ import android.os.PowerManager
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-class BlankScreenActivity : AppCompatActivity() {
+class BlankScreenActivity : Activity() {
 
     private lateinit var wakelock: PowerManager.WakeLock
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_blank_screen)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -64,10 +62,7 @@ class BlankScreenActivity : AppCompatActivity() {
             }
         } else {
             window.decorView.windowInsetsController?.apply {
-                // systemBars : Status barとNavigation bar両方
                 hide(WindowInsets.Type.systemBars())
-                // hide(WindowInsets.Type.statusBars())
-                // hide(WindowInsets.Type.navigationBars())
                 systemBarsBehavior = BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
         }
