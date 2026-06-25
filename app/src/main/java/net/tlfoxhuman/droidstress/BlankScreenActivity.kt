@@ -26,8 +26,6 @@ import android.os.PowerManager
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class BlankScreenActivity : Activity() {
 
@@ -36,11 +34,6 @@ class BlankScreenActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_blank_screen)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         wakelock = (getSystemService(Context.POWER_SERVICE) as PowerManager).newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK,"BlankScreenActivity::BlankScreenIsActive")
         wakelock.acquire()
