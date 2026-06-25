@@ -1,0 +1,1 @@
+Changed to scroll main screen when display is narrow.
